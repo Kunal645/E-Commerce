@@ -1,5 +1,5 @@
 
-# Movies App
+# E-Commerce App
 
 ## Overview
 
