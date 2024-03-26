@@ -1,14 +1,17 @@
 import 'package:ecom/model/product_model.dart';
+import 'package:ecom/screens/AR/earth_ar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+// import 'package:model_viewer_plus/model_viewer_plus.dart';
+// import 'package:o3d/o3d.dart';
 import '../constant/text_style.dart';
 import '../controller/cart_controller.dart';
 import '../controller/dashboard_controller.dart';
 import '../controller/wishlist_controller.dart';
 import '../model/cart_model.dart';
+import 'AR/ar_screen.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
@@ -68,12 +71,46 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               Align(
                 alignment: Alignment.center,
-                child: Hero(
+                child:/* widget.product.id != 14
+                ?*/ Hero(
                     tag: widget.heroString,
                     child: Image.network(widget.product.image.toString(),height: 300.h,)
-                ),
+                )
+               /* : SizedBox(
+                    height: 300.h,
+                    child: ModelViewer(
+                        src: 'assets/images/tv.glb',
+                      autoRotate: false,
+                      cameraControls: true,
+                      disableZoom: true,
+
+                      // relatedJs: js,
+                      // innerModelViewerHtml: _html2,
+                      // overwriteNodeValidatorBuilder: myNodeValidatorBuilder,
+                      // backgroundColor: Colors.red,
+                      alt: 'A 3D model of an astronaut',
+                    )
+                ),*/
               ),
               SizedBox(height: 30.h,),
+              // InkWell(
+              //   onTap: (){
+              //     Get.to(()=> Earth_AR());
+              //   },
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //         color: const Color(0xff67C4A7),
+              //         borderRadius: BorderRadius.circular(10.r)
+              //     ),
+              //     alignment: Alignment.center,
+              //     padding: EdgeInsets.all(5.w),
+              //     height: 40.h,
+              //     child: GestureDetector(
+              //       child: Text('View in 360',style: TextStyles.k12Bold(color: Colors.white)),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(height: 30.h,),
               Row(
                 children: [
                   RatingBarIndicator(

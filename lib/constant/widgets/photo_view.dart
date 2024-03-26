@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class FullScreenPhotoView extends StatelessWidget {
-  final File? file;
-  const FullScreenPhotoView({required this.file,super.key});
+  final String? url;
+  const FullScreenPhotoView({required this.url,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class FullScreenPhotoView extends StatelessWidget {
       body: PhotoView(
         minScale: PhotoViewComputedScale.contained,
         maxScale: PhotoViewComputedScale.covered,
-        imageProvider: Image.file(file!).image,
+        imageProvider: Image.network(url.toString()).image,
       ),
     );
   }

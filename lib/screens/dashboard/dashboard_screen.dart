@@ -1,4 +1,5 @@
 import 'package:ecom/controller/dashboard_controller.dart';
+import 'package:ecom/controller/user_controller.dart';
 import 'package:ecom/controller/wishlist_controller.dart';
 import 'package:ecom/screens/account/account_details_screen.dart';
 import 'package:ecom/screens/homescreen/home-screen.dart';
@@ -18,10 +19,13 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
 
-  DashboardController controller = Get.find();
+  DashboardController controller = Get.put(DashboardController());
+
 
   @override
   void initState() {
+
+    // Get.find<UserController>().getUserDetails();
     Get.find<WishlistController>().getWishlist();
     // TODO: implement initState
     super.initState();

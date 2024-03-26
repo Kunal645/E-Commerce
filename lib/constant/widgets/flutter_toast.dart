@@ -1,15 +1,15 @@
-//
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:flutter/material.dart';
-//
-// flutterToastMessage(msg, [Color? color]) async {
-//   await Fluttertoast.showToast(
-//       msg: msg,
-//       toastLength: Toast.LENGTH_LONG,
-//       gravity: ToastGravity.BOTTOM,
-//       timeInSecForIosWeb: 1,
-//       backgroundColor: color ?? Colors.green,
-//       textColor: Colors.white,
-//       fontSize: 16.0
-//   );
-// }
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
+
+flutterToast(String str){
+  return Fluttertoast.showToast(
+      msg: str,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.sp
+  );
+}

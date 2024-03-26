@@ -27,8 +27,8 @@ class TextStyles{
     return TextStyle(fontSize: 14.sp,fontWeight: FontWeight.bold,color: color ?? Colors.black);
   }
 
-  static TextStyle k14Regular(){
-    return TextStyle(fontSize: 14.sp);
+  static TextStyle k14Regular({Color? color}){
+    return TextStyle(fontSize: 14.sp,color: color ?? Colors.black);
   }
 
   static TextStyle k16Bold({Color? color}){
@@ -53,6 +53,13 @@ class TextStyles{
 
   static TextStyle k22Bold(){
     return TextStyle(fontSize: 122.sp,fontWeight: FontWeight.bold);
+  }
+
+  static TextStyle k20PoppinsMedium(){
+    return TextStyle(
+        fontFamily: 'Poppins-Medium',
+        fontSize: 20.sp,
+        fontWeight: FontWeight.w500);
   }
 
 }

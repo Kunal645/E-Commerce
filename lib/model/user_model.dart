@@ -1,6 +1,6 @@
 class UserModel {
   Address? address;
-  int? id;
+  String? id;
   String? email;
   String? username;
   String? password;

@@ -1,17 +1,21 @@
 import 'package:ecom/model/cart_model_hive.dart';
 import 'package:ecom/model/product_model_hive.dart';
 import 'package:ecom/model/wishlist_model_hive.dart';
-import 'package:ecom/screens/dashboard/dashboard_screen.dart';
-import 'package:ecom/screens/homescreen/home-screen.dart';
+import 'package:ecom/screens/splash/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'constant/controller_binding.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(ProductModelAdapter());
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           initialBinding: ControllerBinding(),
-          home: const DashboardScreen(),
+          home: const SplashScreen(),
         );
       }
     );
