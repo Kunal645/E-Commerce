@@ -2,8 +2,6 @@ class UserModel {
   Address? address;
   String? id;
   String? email;
-  String? username;
-  String? password;
   Name? name;
   String? phone;
   String? profilePic;
@@ -13,8 +11,6 @@ class UserModel {
       {this.address,
         this.id,
         this.email,
-        this.username,
-        this.password,
         this.name,
         this.phone,
         this.profilePic,
@@ -24,8 +20,6 @@ class UserModel {
     address = json['address'] != null ? Address.fromJson(json['address']) : null;
     id = json['id'];
     email = json['email'];
-    username = json['username'];
-    password = json['password'];
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     phone = json['phone'];
     profilePic = json['profilePic'];
@@ -39,13 +33,12 @@ class UserModel {
     }
     data['id'] = id;
     data['email'] = email;
-    data['username'] = username;
-    data['password'] = password;
     if (name != null) {
       data['name'] = name!.toJson();
     }
     data['phone'] = phone;
     data['__v'] = iV;
+    data['profilePic'] = profilePic;
     return data;
   }
 }
@@ -56,11 +49,10 @@ class Address {
   String? street;
   String? addressLine;
   String? landMark;
-  int? number;
   String? zipcode;
 
   Address(
-      {this.geolocation, this.city, this.street, this.number, this.addressLine, this.landMark, this.zipcode});
+      {this.geolocation, this.city, this.street, this.addressLine, this.landMark, this.zipcode});
 
   Address.fromJson(Map<String, dynamic> json) {
     geolocation = json['geolocation'] != null
@@ -68,7 +60,6 @@ class Address {
         : null;
     city = json['city'];
     street = json['street'];
-    number = json['number'];
     addressLine = json['addressLine'];
     zipcode = json['zipcode'];
     landMark = json['landMark'];
@@ -82,7 +73,6 @@ class Address {
     data['city'] = city;
     data['addressLine'] = addressLine;
     data['street'] = street;
-    data['number'] = number;
     data['zipcode'] = zipcode;
     data['landMark'] = landMark;
     return data;

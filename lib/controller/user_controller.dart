@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController extends GetxController{
 
@@ -28,90 +27,23 @@ class UserController extends GetxController{
 
   RxString addressString = "".obs;
 
-  SharedPreferences? sharedPref;
+  FirebaseFirestore firebase = FirebaseFirestore.instance;
+  FirebaseStorage fbStorage = FirebaseStorage.instance;
 
-  getStream() {
-    var response = FirebaseFirestore.instance.collection(StringConstant.pathUserCollection).where("id",isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots();
-    print(response);
+  Stream<DocumentSnapshot> getStream() {
+    var response = firebase.collection(StringConstant.pathUserCollection).doc(FirebaseAuth.instance.currentUser!.uid).snapshots();
     return response;
   }
 
-  // getUser(UserModel user) async {
-  //   sharedPref = await SharedPreferences.getInstance();
-  //   var tempString = sharedPref?.getString(StringConstant.firstName);
-  //   if(tempString == null || tempString.toString().isEmpty){
-  //     setUserDetails(
-  //       user.id.toString(),
-  //         user.name!.firstname ?? "", user.name!.lastname ?? "",
-  //         user.phone ?? "", user.email ?? "",
-  //         user.address?.addressLine ?? "", user.address?.street ?? "",
-  //         user.address?.landMark ?? "", user.address?.city ?? "", user.address?.zipcode ?? "",
-  //         user.profilePic ?? ""
-  //     );
-  //   }
-  //   // getUserDetails();
-  // }
-
-  // setUserDetails(id, firstName,lastName,phone,email,addressLine,street,landMark,city,zipCode, profilePic){
-  //   sharedPref?.setString(StringConstant.id, id.toString());
-  //   sharedPref?.setString(StringConstant.firstName, firstName.toString().trim());
-  //   sharedPref?.setString(StringConstant.lastName, lastName.toString().trim());
-  //   sharedPref?.setString(StringConstant.number,phone.toString().trim());
-  //   sharedPref?.setString(StringConstant.email, email.toString().trim());
-  //   sharedPref?.setString(StringConstant.addressLine, addressLine.toString().trim());
-  //   sharedPref?.setString(StringConstant.street, street.toString().trim());
-  //   sharedPref?.setString(StringConstant.landMark, landMark.toString().trim());
-  //   sharedPref?.setString(StringConstant.city, city.toString().trim());
-  //   sharedPref?.setString(StringConstant.zipCode, zipCode.toString().trim());
-  //   sharedPref?.setString(StringConstant.profilePic, profilePic);
-  //   sharedPref?.setBool(StringConstant.isLoggedIn, true);
-  // }
-
-  // getUserDetails() async {
-  //   sharedPref = await SharedPreferences.getInstance();
-  //   user.value = UserModel(
-  //     id: sharedPref?.getString(StringConstant.id),
-  //     name: Name(firstname: sharedPref?.getString(StringConstant.firstName),lastname: sharedPref?.getString(StringConstant.lastName)),
-  //     phone: sharedPref?.getString(StringConstant.number),
-  //     email: sharedPref?.getString(StringConstant.email),
-  //     address: Address(
-  //         addressLine: sharedPref?.getString(StringConstant.addressLine),
-  //         street: sharedPref?.getString(StringConstant.street),
-  //         landMark: sharedPref?.getString(StringConstant.landMark),
-  //         city: sharedPref?.getString(StringConstant.city),
-  //         zipcode: sharedPref?.getString(StringConstant.zipCode)
-  //     ),
-  //     profilePic: sharedPref?.getString(StringConstant.profilePic)
-  //   );
-  //
-  //   addressString.value =
-  //   "${user.value.address!.addressLine != null && user.value.address!.addressLine!.isNotEmpty ? '${user.value.address?.addressLine!.replaceAll(",", "")}, ' : ""}"
-  //   "${user.value.address!.street != null && user.value.address!.street!.isNotEmpty ? "${user.value.address!.street!.replaceAll(",", "")}, " : ""}"
-  //   "${user.value.address!.landMark != null && user.value.address!.landMark!.isNotEmpty ? "${user.value.address!.landMark!.replaceAll(",", "")}, " : ""}"
-  //   "${user.value.address!.city != null && user.value.address!.city!.isNotEmpty ? "${user.value.address!.city!.replaceAll(",", "")} - " : ""}"
-  //   "${user.value.address!.zipcode != null && user.value.address!.zipcode!.isNotEmpty ? user.value.address!.zipcode!.replaceAll(",", "") : ""}";
-  //
-  //   firstNameController.value.text = user.value.name!.firstname ?? "";
-  //   lastNameController.value.text = user.value.name!.lastname ?? "";
-  //   mobileNumberController.value.text = user.value.phone ?? "";
-  //   emailController.value.text = user.value.email ?? "";
-  //   addressLineController.value.text = user.value.address?.addressLine ?? "";
-  //   streetController.value.text = user.value.address?.street ?? "";
-  //   landMarkController.value.text = user.value.address?.landMark ?? "";
-  //   cityController.value.text = user.value.address?.city ?? "";
-  //   zipCodeController.value.text = user.value.address?.zipcode ?? "";
-  //
-  // }
-
-
   getUserDetails(UserModel userModel) async {
     user.value = userModel;
+    user.value.id = FirebaseAuth.instance.currentUser!.uid;
     addressString.value =
-    "${user.value.address!.addressLine != null && user.value.address!.addressLine!.isNotEmpty ? '${user.value.address?.addressLine!.replaceAll(",", "")}, ' : ""}"
-    "${user.value.address!.street != null && user.value.address!.street!.isNotEmpty ? "${user.value.address!.street!.replaceAll(",", "")}, " : ""}"
-    "${user.value.address!.landMark != null && user.value.address!.landMark!.isNotEmpty ? "${user.value.address!.landMark!.replaceAll(",", "")}, " : ""}"
-    "${user.value.address!.city != null && user.value.address!.city!.isNotEmpty ? "${user.value.address!.city!.replaceAll(",", "")} - " : ""}"
-    "${user.value.address!.zipcode != null && user.value.address!.zipcode!.isNotEmpty ? user.value.address!.zipcode!.replaceAll(",", "") : ""}";
+    "${user.value.address?.addressLine != null && user.value.address!.addressLine!.isNotEmpty ? '${user.value.address?.addressLine!.replaceAll(",", "")}, ' : ""}"
+    "${user.value.address?.street != null && user.value.address!.street!.isNotEmpty ? "${user.value.address!.street!.replaceAll(",", "")}, " : ""}"
+    "${user.value.address?.landMark != null && user.value.address!.landMark!.isNotEmpty ? "${user.value.address!.landMark!.replaceAll(",", "")}, " : ""}"
+    "${user.value.address?.city != null && user.value.address!.city!.isNotEmpty ? "${user.value.address!.city!.replaceAll(",", "")} - " : ""}"
+    "${user.value.address?.zipcode != null && user.value.address!.zipcode!.isNotEmpty ? user.value.address!.zipcode!.replaceAll(",", "") : ""}";
 
     firstNameController.value.text = user.value.name!.firstname ?? "";
     lastNameController.value.text = user.value.name!.lastname ?? "";
@@ -122,16 +54,11 @@ class UserController extends GetxController{
     landMarkController.value.text = user.value.address?.landMark ?? "";
     cityController.value.text = user.value.address?.city ?? "";
     zipCodeController.value.text = user.value.address?.zipcode ?? "";
-
-  }
-
-  updateProfileData(String userId, String firstNames, String lastNames, String about) async {
-
   }
 
   updateUserData(){
     UserModel updateUser = UserModel(
-      id: sharedPref?.getString(StringConstant.id),
+      id: user.value.id,
       email: emailController.value.text,
       name: Name(firstname: firstNameController.value.text,lastname: lastNameController.value.text),
       phone: mobileNumberController.value.text,
@@ -143,39 +70,19 @@ class UserController extends GetxController{
         zipcode:  zipCodeController.value.text.trim(),
       )
     );
-    FirebaseFirestore.instance
-        .collection(StringConstant.pathUserCollection)
-        .doc(user.value.id.toString())
-        .update(updateUser.toJson());
-    // setUserDetails(
-    //     user.value.id.toString(),
-    //     firstNameController.value.text.trim(), lastNameController.value.text.trim(),
-    //     mobileNumberController.value.text.trim(), emailController.value.text.trim(),
-    //     addressLineController.value.text.trim(), streetController.value.text,
-    //     landMarkController.value.text,
-    //     cityController.value.text.trim(), zipCodeController.value.text.trim(),
-    //     sharedPref?.getString(StringConstant.profilePic)
-    // );
-
-    // getUserDetails();
+    firebase.collection(StringConstant.pathUserCollection).doc(user.value.id.toString()).update(updateUser.toJson());
   }
 
-  FirebaseStorage fbStorage = FirebaseStorage.instance;
   updateProfilePic(File value) async {
-    sharedPref?.setString(StringConstant.profilePic, value.path);
-    // user.value.profilePic = sharedPref?.getString(StringConstant.profilePic);
     try {
       await fbStorage.ref(StringConstant.profilePic).child(user.value.id.toString()).putFile(value);
+      String url = await fbStorage.ref(StringConstant.profilePic).child(user.value.id.toString()).getDownloadURL();
+      firebase.collection(StringConstant.pathUserCollection).doc(user.value.id.toString()).update({StringConstant.profilePic : url});
+      user.value.profilePic = url;
+      user.update((val) { });
     } catch (e) {
       print('error occurred');
     }
-    String url = await fbStorage.ref(StringConstant.profilePic).child(user.value.id.toString()).getDownloadURL();
-    FirebaseFirestore.instance
-        .collection(StringConstant.profilePic)
-        .doc(user.value.id.toString())
-        .update({"profilePic": url});
-    user.value.profilePic = url;
-    user.update((val) { });
   }
 
 }

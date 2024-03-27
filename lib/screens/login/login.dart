@@ -162,7 +162,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller.singIn();
                     }
                     else{
-
+                      if(controller.mailController.value.text.isEmpty && controller.passController.value.text.isEmpty){
+                        flutterToast("Enter your credentials");
+                      }
+                      else if(controller.mailController.value.text.isEmpty){
+                        flutterToast("Enter your mail");
+                      }
+                      else{
+                        flutterToast("Enter your password");
+                      }
                     }
                   },
                   child: Container(
@@ -250,31 +258,36 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 20.h,),
 
             ///SignIn with Google
-            Container(
-              width: Get.width/1.5,
-              decoration: BoxDecoration(
-                  border: Border.all(color: signInBox),
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: 48.sp,
-                    margin: EdgeInsets.only(right: 10.w),
-                    child: Image.asset(
-                      'assets/images/icon_google.png',
-                      width: 20.w,
-                      height: 21.h,
+            InkWell(
+              onTap: (){
+                controller.signInWithGoogle();
+              },
+              child: Container(
+                width: Get.width/1.5,
+                decoration: BoxDecoration(
+                    border: Border.all(color: signInBox),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 48.sp,
+                      margin: EdgeInsets.only(right: 10.w),
+                      child: Image.asset(
+                        'assets/images/icon_google.png',
+                        width: 20.w,
+                        height: 21.h,
+                      ),
                     ),
-                  ),
-                  Text('Sign In with with Google', style: TextStyle(
-                      color: forgotPasswordText,
-                      fontSize: 15.sp,
-                      fontFamily: 'Poppins-Medium',
-                      fontWeight: FontWeight.w600),)
-                ],
+                    Text('Sign In with Google', style: TextStyle(
+                        color: forgotPasswordText,
+                        fontSize: 15.sp,
+                        fontFamily: 'Poppins-Medium',
+                        fontWeight: FontWeight.w600),)
+                  ],
+                ),
               ),
             )
           ],
@@ -400,6 +413,8 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         builder: (context){
           return Dialog(
+            backgroundColor: Colors.white,
+            elevation: 0,
             child: ListView(
               padding: EdgeInsets.all(30.w),
               shrinkWrap: true,
